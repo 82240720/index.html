@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agri Purewell - Organic Products</title>
+    <style>
+        /* CSS Styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; width: 100%; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f5f9f5 0%, #e8f5e9 100%); color: #2d4a2b; overflow-x: hidden; }
+        .page-wrapper { width: 100%; min-height: 100%; display: flex; flex-direction: column; }
+        
+        /* Navbar */
+        .navbar { background: white; box-shadow: 0 2px 10px rgba(45, 74, 43, 0.1); position: sticky; top: 0; z-index: 999; width: 100%; }
+        .navbar-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; flex-wrap: wrap; gap: 15px; }
+        .navbar-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #2e7d32; cursor: pointer; }
+        .navbar-logo { font-size: 32px; }
+        .navbar-brand-name { font-size: 24px; font-weight: 700; color: #2e7d32; }
+        .navbar-menu { display: flex; align-items: center; gap: 8px; list-style: none; flex-wrap: wrap; }
+        .navbar-link { display: flex; align-items: center; gap: 6px; padding: 10px 18px; text-decoration: none; color: #2d4a2b; font-weight: 600; font-size: 15px; border-radius: 10px; transition: all 0.3s ease; cursor: pointer; }
+        .navbar-link:hover { background: #f5f9f5; color: #2e7d32; }
+        .navbar-link.active { background: #2e7d32; color: white; }
+        .navbar-cart-btn { background: #2e7d32; color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; font-size: 15px; position: relative; }
+        .navbar-cart-badge { background: #ff9800; color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; position: absolute; top: -5px; right: -5px; }
+        .mobile-menu-toggle { display: none; background: none; border: none; font-size: 28px; cursor: pointer; color: #2e7d32; }
+
+        /* Content */
+        .main-content { flex: 1; width: 100%; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .page-section { display: none; animation: fadeIn 0.5s ease; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Hero */
+        .hero-section { background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); color: white; padding: 80px 40px; border-radius: 25px; text-align: center; margin-bottom: 40px; box-shadow: 0 10px 40px rgba(46, 125, 50, 0.3); }
+        .hero-icon { font-size: 80px; margin-bottom: 20px; }
+        .hero-title { font-size: 48px; font-weight: 700; margin-bottom: 20px; }
+        .hero-btn { background: white; color: #2e7d32; border: none; padding: 16px 40px; border-radius: 12px; font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        .feature-card { background: white; padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 5px 20px rgba(45, 74, 43, 0.1); }
+        .feature-icon { font-size: 50px; margin-bottom: 15px; }
+        .feature-title { font-size: 20px; font-weight: 700; color: #2e7d32; margin-bottom: 10px; }
+
+        /* Products */
+        .products-header { text-align: center; margin-bottom: 40px; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 20px rgba(45, 74, 43, 0.08); }
+        .products-title { font-size: 42px; font-weight: 700; color: #2e7d32; margin-bottom: 10px; }
+        .products-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .product-card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 8px 30px rgba(45, 74, 43, 0.1); transition: transform 0.3s ease; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-image { width: 100%; height: 220px; background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 80px; }
+        .product-category { font-size: 13px; color: #66bb6a; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 8px; }
+        .product-name { font-size: 26px; font-weight: 700; color: #2d4a2b; margin-bottom: 5px; }
+        .product-price { font-size: 20px; font-weight: 700; color: #d32f2f; margin-bottom: 12px; display: block; }
+        .quantity-selector { display: flex; align-items: center; gap: 15px; background: #f5f9f5; padding: 12px; border-radius: 12px; margin-top: 10px; margin-bottom: 20px; }
+        .quantity-btn { width: 36px; height: 36px; border: none; background: #2e7d32; color: white; border-radius: 8px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .add-to-cart-btn { width: 100%; padding: 16px; background: #2e7d32; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .add-to-cart-btn:hover { background: #1b5e20; }
+
+        /* Cart & Contact */
+        .cart-panel { position: fixed; right: 20px; bottom: 20px; width: 340px; max-height: 500px; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(45, 74, 43, 0.2); transition: transform 0.3s ease, opacity 0.3s ease; z-index: 1000; transform: translateY(calc(100% + 20px)); opacity: 0; pointer-events: none; }
+        .cart-panel.visible { transform: translateY(0); opacity: 1; pointer-events: all; }
+        .cart-header { background: #2e7d32; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .cart-items { padding: 20px; max-height: 300px; overflow-y: auto; }
+        .cart-item { background: #f5f9f5; padding: 15px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .order-now-btn { width: 100%; padding: 12px; background: #25D366; color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .order-now-btn:hover { background: #128C7E; }
+        .contact-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .contact-info-card { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 8px 30px rgba(45, 74, 43, 0.1); text-align: center; }
+        .toast { position: fixed; top: 20px; right: 20px; background: #2e7d32; color: white; padding: 16px 24px; border-radius: 12px; opacity: 0; transform: translateX(400px); transition: all 0.3s ease; z-index: 2000; }
+        .toast.show { opacity: 1; transform: translateX(0); }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle { display: block; }
+            .navbar-menu { display: none; width: 100%; flex-direction: column; background: white; padding: 15px 0; border-radius: 10px; box-shadow: 0 4px 12px rgba(45, 74, 43, 0.1); margin-top: 10px; }
+            .navbar-menu.active { display: flex; }
+            .cart-panel { width: calc(100% - 40px); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrapper">
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand" onclick="navigateToPage('home')">
+                <span class="navbar-logo">🌿</span> 
+                <span class="navbar-brand-name">Agri Purewell</span>
+            </div>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            <ul class="navbar-menu" id="navbarMenu">
+                <li class="navbar-item"><div class="navbar-link active" onclick="navigateToPage('home')">🏠 Home</div></li>
+                <li class="navbar-item"><div class="navbar-link" onclick="navigateToPage('products')">🛍️ Products</div></li>
+                <li class="navbar-item"><div class="navbar-link" onclick="navigateToPage('about')">ℹ️ About</div></li>
+                <li class="navbar-item"><div class="navbar-link" onclick="navigateToPage('contact')">📞 Contact</div></li>
+                <li class="navbar-item"><button class="navbar-cart-btn" onclick="toggleCart()">🛒 Cart <span class="navbar-cart-badge" id="navCartBadge">0</span></button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="page-section active" id="homePage">
+            <div class="hero-section">
+                <div class="hero-icon">🌱</div>
+                <h1 class="hero-title">Organic & Pure</h1>
+                <p>Premium organic powders direct from farm to you.</p>
+                <br>
+                <button class="hero-btn" onclick="navigateToPage('products')">Shop Now →</button>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card"><div class="feature-icon">🌿</div><h3>100% Organic</h3></div>
+                <div class="feature-card"><div class="feature-icon">💚</div><h3>Pure & Natural</h3></div>
+                <div class="feature-card"><div class="feature-icon">🚚</div><h3>Fast Delivery</h3></div>
+            </div>
+        </section>
+
+        <section class="page-section" id="productsPage">
+            <div class="products-header">
+                <h1 class="products-title">Our Products</h1>
+                <p>High Quality Organic Powders</p>
+            </div>
+            <div class="products-container">
+                <div class="product-card">
+                    <div class="product-image">🌱</div>
+                    <div class="product-info">
+                        <div class="product-category">Organic Powder</div>
+                        <h2 class="product-name">Moringa Powder</h2>
+                        <span class="product-price">₹500 / kg</span>
+                        <p class="product-description">Rich in antioxidants and nutrients. Boosts immunity naturally.</p>
+                        
+                        <div class="quantity-section">
+                            <label>Quantity (Kg)</label>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn" onclick="changeQty('moringa', -0.25)">−</button>
+                                <div class="quantity-display" id="qty-moringa">1.00 kg</div>
+                                <button class="quantity-btn" onclick="changeQty('moringa', 0.25)">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn" onclick="addToCart('moringa', 'Moringa Powder', 500)">🛒 Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">🥬</div>
+                    <div class="product-info">
+                        <div class="product-category">Organic Powder</div>
+                        <h2 class="product-name">Beetroot Powder</h2>
+                        <span class="product-price">₹400 / kg</span>
+                        <p class="product-description">Boost energy and stamina naturally. Packed with essential vitamins.</p>
+                        
+                        <div class="quantity-section">
+                            <label>Quantity (Kg)</label>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn" onclick="changeQty('beetroot', -0.25)">−</button>
+                                <div class="quantity-display" id="qty-beetroot">1.00 kg</div>
+                                <button class="quantity-btn" onclick="changeQty('beetroot', 0.25)">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn" onclick="addToCart('beetroot', 'Beetroot Powder', 400)">🛒 Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section" id="aboutPage">
+            <div class="about-container" style="background:white; padding:40px; border-radius:20px;">
+                <h1 class="about-title" style="text-align:center;">Our Story</h1>
+                <p class="about-text" style="text-align:center; margin-top:20px;">
+                    We are committed to bringing you the finest organic products sourced directly from nature.
+                    We make pure, natural, and healthy organic products accessible to everyone.
+                </p>
+            </div>
+        </section>
+
+        <section class="page-section" id="contactPage">
+            <div class="contact-container">
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">📧</div>
+                    <h3>Email Us</h3>
+                    <p>mkmkorganics7@gmail.com</p>
+                </div>
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">📱</div>
+                    <h3>Call / WhatsApp</h3>
+                    <p>+91 9340701965</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <div class="cart-title">🛒 Your Cart</div>
+            <button onclick="toggleCart()" style="background:transparent; border:none; color:white; font-size:20px;">✕</button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer">
+            <div style="text-align:center; padding:20px; color:#666;">Cart is empty</div>
+        </div>
+        <div style="padding:20px; border-top:1px solid #eee;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-weight:bold;">
+                <span>Total:</span>
+                <span id="cartTotal">₹0</span>
+            </div>
+            <button class="order-now-btn" onclick="orderViaWhatsApp()">
+                <span>📱 Order on WhatsApp</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Item Added to Cart!</div>
+</div>
+
+<script>
+    // --- Data & State ---
+    // Yaha par aapka number set kiya gaya hai (91 country code hai)
+    const PHONE_NUMBER = "919340701965"; 
+    
+    // Default Quantities for selection
+    let selectionState = {
+        'moringa': 1.0,
+        'beetroot': 1.0
+    };
+
+    // Cart Array
+    let cart = [];
+
+    // --- Navigation ---
+    function navigateToPage(pageId) {
+        // Hide all sections
+        document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.navbar-link').forEach(link => link.classList.remove('active'));
+        
+        // Show target
+        document.getElementById(pageId + 'Page').classList.add('active');
+        
+        // Update Nav
+        const activeLink = document.querySelector(`.navbar-link[onclick="navigateToPage('${pageId}')"]`);
+        if(activeLink) activeLink.classList.add('active');
+
+        // Close mobile menu if open
+        document.getElementById('navbarMenu').classList.remove('active');
+        window.scrollTo(0,0);
+    }
+
+    function toggleMobileMenu() {
+        document.getElementById('navbarMenu').classList.toggle('active');
+    }
+
+    // --- Quantity Selector Logic ---
+    function changeQty(productId, change) {
+        let current = selectionState[productId];
+        let newVal = current + change;
+        
+        // Min limit 0.25kg
+        if (newVal < 0.25) newVal = 0.25;
+        
+        selectionState[productId] = newVal;
+        document.getElementById('qty-' + productId).innerText = newVal.toFixed(2) + " kg";
+    }
+
+    // --- Cart Logic ---
+    function addToCart(productId, name, pricePerKg) {
+        let qty = selectionState[productId];
+        
+        // Check if item exists in cart
+        let existingItem = cart.find(item => item.id === productId);
+        
+        if (existingItem) {
+            existingItem.qty += qty;
+        } else {
+            cart.push({
+                id: productId,
+                name: name,
+                price: pricePerKg,
+                qty: qty
+            });
+        }
+
+        updateCartUI();
+        showToast(`Added ${qty}kg ${name}`);
+        toggleCart(true); // Open cart to show
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        const container = document.getElementById('cartItemsContainer');
+        const badge = document.getElementById('navCartBadge');
+        const totalEl = document.getElementById('cartTotal');
+        
+        badge.innerText = cart.length;
+
+        if (cart.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:20px; color:#666;">Cart is empty</div>';
+            totalEl.innerText = "₹0";
+            return;
+        }
+
+        let html = '';
+        let grandTotal = 0;
+
+        cart.forEach((item, index) => {
+            let itemTotal = item.price * item.qty;
+            grandTotal += itemTotal;
+            html += `
+                <div class="cart-item">
+                    <div>
+                        <div style="font-weight:bold; font-size:14px;">${item.name}</div>
+                        <div style="font-size:12px; color:#666;">${item.qty} kg x ₹${item.price}</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-weight:bold; color:#2e7d32;">₹${itemTotal}</span>
+                        <button onclick="removeFromCart(${index})" style="background:#ffdddd; color:red; border:none; width:24px; height:24px; border-radius:4px; cursor:pointer;">×</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+        totalEl.innerText = "₹" + grandTotal;
+    }
+
+    function toggleCart(forceOpen = false) {
+        const panel = document.getElementById('cartPanel');
+        if (forceOpen) {
+            panel.classList.add('visible');
+        } else {
+            panel.classList.toggle('visible');
+        }
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // --- WhatsApp Order Logic ---
+    function orderViaWhatsApp() {
+        if (cart.length === 0) {
+            showToast("Cart is empty!");
+            return;
+        }
+
+        let message = "Hello, I would like to place an order from your website:\n\n";
+        let grandTotal = 0;
+
+        cart.forEach(item => {
+            let itemTotal = item.price * item.qty;
+            grandTotal += itemTotal;
+            // Format: Moringa Powder: 1.0kg (₹500)
+            message += `▪️ ${item.name}: ${item.qty} kg (₹${itemTotal})\n`;
+        });
+
+        message += `\n*Total Amount: ₹${grandTotal}*\n\nPlease confirm my order.`;
+
+        // Create WhatsApp Link with your specific number
+        const url = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(message)}`;
+        
+        // Open in new tab
+        window.open(url, '_blank');
+    }
+</script>
+
+</body>
+</html>
